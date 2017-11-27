@@ -1,0 +1,29 @@
+<!--
+WholesomeChat Web
+CS480 - Project Manager Michael Cruz
+
+A web application to access WholesomeChat, made with HTML, CSS, and JavaScript.
+  Requires the WholesomeChat server.
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>WholesomeChat Web</title>
+      <link rel=stylesheet type="text/css" href="css/style.css">
+      <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+    </head>
+    <body>
+        <div id="welcome">
+          <h1>WholesomeChat</h1>
+          <h2>For only the most wholesome of chats</h2>
+        </div>
+        <div id="message-box" class="message-text"></div>
+        <div>
+            <span id="status" class="message-text">Connecting...</span>
+            <input type="text" id="input" disabled="disabled" class="message-text"/>
+        </div>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="js/script.js"></script>
+    </body>
+</html>
