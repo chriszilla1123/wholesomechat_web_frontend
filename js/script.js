@@ -5,11 +5,15 @@ $(function () {
     var content = $('#message-box');
     var input = $('#input');
     var status = $('#status');
+    var passtext = $('#passtext');
+    var password = $('#password');
 
     // my color assigned by the server
     var myColor = false;
     // my name sent to the server
     var myName = false;
+  
+    var loggedIn = false;
 
     // if user is running mozilla then use it's built-in WebSocket
     window.WebSocket = window.WebSocket || window.MozWebSocket;
@@ -30,7 +34,9 @@ $(function () {
     connection.onopen = function () {
         // first we want users to enter their names
         input.removeAttr('disabled');
-        status.text('Choose name:');
+        status.text('Username');
+        password.removeAttr('disabled');
+        passtext.text('Password:');
     };
 
     connection.onerror = function (error) {
@@ -84,13 +90,24 @@ $(function () {
     /**
      * Send mesage when user presses Enter key
      */
-    input.keydown(function(e) {
-        if (e.keyCode === 13) {
+    $('#input, #password').keydown(function(e) {
+        
+      if(e.keyCode === 13 && loggedIn === false) {  //Log in
+        var obj = {
+          user: input.val(),
+          pass: password.val()
+        };
+        connection.send(JSON.stringify(obj));
+        input.attr('disabled', 'disabled');
+        password.attr('disabled', 'hidden');
+        passtext.attr('hidden');
+        }
+      
+      if (e.keyCode === 13 && loggedIn === true) {  //Regular messages
             var msg = $(this).val();
             if (!msg) {
                 return;
             }
-            // send the message as an ordinary text
             connection.send(msg);
             $(this).val('');
             // disable the input field to make the user wait until server
