@@ -63,10 +63,15 @@ $(function () {
 
         // NOTE: if you're not sure about the JSON structure
         // check the server source code above
-        if (json.type === "color") { // first response from the server with user's color
-            myColor = json.data;
-            status.text(myName + ': ').css('color', myColor);
+        if (json.type === "login") { // first response from the server.
+            myName = json.user;
+            status.text(myName + ': ')
+            input.val("");
             input.removeAttr('disabled').focus();
+            password.attr('disabled');
+            password.hide();
+            passtext.hide();
+            loggedIn = true;
             // from now user can start sending messages
         } else if (json.type === 'messages') { // entire message history
             // insert every single message to the chat window
@@ -76,8 +81,8 @@ $(function () {
             }
         } else if (json.type === 'message') { // it's a single message
             input.removeAttr('disabled'); // let the user write another message
-            addMessage(json.data.user, json.data.text,
-                       json.data.color, new Date(json.data.time));
+            addMessage(json.data);
+            console.log(json.data);
         } else if (json.type === 'wholesome'){
           input.removeAttr('disabled'); // let the user write another message
           if(json.data === false) alert("Only wholesome chats are alowed" +
@@ -137,10 +142,7 @@ $(function () {
     /**
      * Add message to the chat window
      */
-    function addMessage(user, message, color, dt) {
-        content.prepend('<p><span style="color:' + color + '">' + user + '</span> @ ' +
-             + (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) + ':'
-             + (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes())
-             + ': ' + message + '</p>');
+    function addMessage(message) {
+        content.prepend('<p><span>' + message + '</span></p>');
     }
 });
